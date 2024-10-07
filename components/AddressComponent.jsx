@@ -13,10 +13,10 @@ const AddressComponent = ({ address, setAddress }) => {
       style={styles.textInput}
       theme={{
         colors: {
-          primary: '#FFD700', // Golden color for label
-          placeholder: '#FFD700', // Golden color for placeholder
-          text: '#fff', // White text color for better contrast
-          background: '#333', // Dark background for input
+          primary: '#BFA76F', // Light golden shade for label
+          placeholder: '#BFA76F', // Light golden for placeholder
+          text: '#333', // Dark text color for contrast with light theme
+          background: '#F7F6F3', // Very light cream background
         }
       }}
     />
@@ -25,12 +25,18 @@ const AddressComponent = ({ address, setAddress }) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    marginVertical: 10,
-    backgroundColor: '#555', // Darker background for input fields
+    margin: 10,
+    backgroundColor: '#FAF9F6', // Light cream background for input fields
     borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for text input
-    borderRadius: 10, // Rounded corners for input
+    borderColor: '#BFA76F', // Light golden border for input
+    borderRadius: 12, // Smooth rounded corners for a luxurious feel
     height: 55, // Consistent height for input fields
+    paddingHorizontal: 15, // Padding for a comfortable input field
+    shadowColor: '#BFA76F', // Light shadow for VIP effect
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Android shadow effect
   }
 });
 

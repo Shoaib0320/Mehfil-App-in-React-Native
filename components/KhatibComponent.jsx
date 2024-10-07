@@ -26,39 +26,41 @@ const KhatibComponent = ({ khatib, setKhatib, selectKhatibImage, khatibImage }) 
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    margin: 10,
     padding: 15,
-    backgroundColor: '#000000', // Dark background for contrast
+    backgroundColor: '#F0F0F0', // Light grey background for contrast
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for elegance
-    shadowColor: '#FFD700',
+    borderColor: '#A5A5A5', // Light silver border for elegance
+    shadowColor: '#A5A5A5',
     shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 5,
   },
   header: {
     marginBottom: 10,
     fontSize: 20,
-    color: '#FFD700', // Golden text color for the header
+    color: '#5A5A5A', // Softer grey color for the header
     textAlign: 'center',
   },
   khatibItem: {
     marginBottom: 15,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#FFD700',
+    borderColor: '#DADADA', // Light border around items
     borderRadius: 10,
-    backgroundColor: '#333333', // Darker background for item
+    backgroundColor: '#FFFFFF', // White background for item
   },
   textInput: {
     marginBottom: 10,
-    backgroundColor: '#444444', // Dark background for input
-    color: '#FFD700', // Golden text for visibility
+    backgroundColor: '#EAEAEA', // Light background for input field
+    color: '#333333', // Darker grey text for better readability
   },
   button: {
     marginTop: 10,
+    backgroundColor: '#4CAF50', // Soft green button for a fresh look
+    color: '#FFFFFF', // White text on buttons
   },
   image: {
     width: 100,
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
   },
+
 });
 
 export default KhatibComponent;

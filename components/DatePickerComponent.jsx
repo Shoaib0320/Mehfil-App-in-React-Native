@@ -24,10 +24,10 @@ const DatePickerComponent = ({ date, setDate }) => {
           style={styles.textInput}
           theme={{ 
             colors: { 
-              primary: '#FFD700', // Golden color for label
-              placeholder: '#FFD700', // Golden color for placeholder
-              text: '#FFD700', // Golden color for text
-              background: '#333333', // Dark background color
+              primary: '#8B4513', // Soft brown for label
+              placeholder: '#A0522D', // Light brown placeholder
+              text: '#8B4513', // Brown text for premium feel
+              background: '#F5F5F5', // Light cream background
             } 
           }} 
         />
@@ -47,33 +47,25 @@ const DatePickerComponent = ({ date, setDate }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 15,
-    padding: 20,
-    backgroundColor: '#1a1a1a', // Darker background for an elegant look
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for elegance
-    shadowColor: '#FFD700',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 15,
-    elevation: 10,
-  },
+
   textInput: {
-    marginVertical: 10,
-    backgroundColor: '#222222', // Slightly darker background for input field
-    color: '#FFD700' , // Golden text color for selected item
+    margin: 10,
+    backgroundColor: '#f5f5f5', // Soft light background for input
+    borderRadius: 10, // Rounded corners
     borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for text input
-    borderRadius: 10, // Rounded corners for input
-    height: 55, // Height to match button style
+    borderColor: '#E3C99C', // VIP gold border
+    paddingHorizontal: 10,
+    shadowColor: '#000', // Slight shadow for depth
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3, // Elevation for Android shadow
   },
   datePicker: {
-    borderRadius: 10,
-    borderColor: '#FFD700',
-    borderWidth: 1,
+    backgroundColor: '#FAF0E6', // Light picker background
+    color: '#8B4513', // Brown text for premium feel
   },
+  
 });
 
 export default DatePickerComponent;

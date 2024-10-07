@@ -19,26 +19,27 @@ const LangerCheckbox = ({ isLangerChecked, setIsLangerChecked }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
+    margin: 10,
     padding: 15,
     borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for contrast
-    backgroundColor: '#000000', // Dark background for contrast
+    borderColor: '#A0A0A0', // Lighter gray border for contrast
+    backgroundColor: '#FFFFFF', // Light background for contrast
     borderRadius: 10,
-    shadowColor: '#FFD700',
+    shadowColor: '#A0A0A0', // Lighter shadow color
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
-  },
-  checkbox: {
+},
+checkbox: {
     // Style for the BouncyCheckbox
     marginVertical: 10,
-  },
-  checkboxText: {
-    color: '#FFD700', // Golden text color for the checkbox text
+},
+checkboxText: {
+    color: '#333333', // Darker text color for better readability
     fontSize: 16, // Increase font size for better readability
-  },
+},
+
 });
 
 export default LangerCheckbox;

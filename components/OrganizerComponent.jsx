@@ -13,10 +13,10 @@ const OrganizerComponent = ({ organization, setOrganization }) => {
       style={styles.textInput}
       theme={{
         colors: {
-          primary: '#FFD700', // Golden color for label
-          placeholder: '#FFD700', // Golden color for placeholder
-          text: '#fff', // White text color for better contrast
-          background: '#333', // Dark background for input
+          primary: '#A0A0A0', // Golden color for label
+          placeholder: '#A0A0A0', // Golden color for placeholder
+          text: '#333', // Dark text color for better contrast
+          background: '#f0f0f0', // Light background for input
         }
       }}
     />
@@ -25,10 +25,10 @@ const OrganizerComponent = ({ organization, setOrganization }) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    marginVertical: 10,
-    backgroundColor: '#555', // Darker background for input fields
+    margin: 10,
+    backgroundColor: '#fff', // Light background for input fields
     borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for text input
+    borderColor: '#A0A0A0', // Lighter gray border for contrast
     borderRadius: 10, // Rounded corners for input
     height: 55, // Consistent height for input fields
   }

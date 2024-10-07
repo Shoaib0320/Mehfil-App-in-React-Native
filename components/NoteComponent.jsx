@@ -20,20 +20,22 @@ const NoteComponent = ({ notes, setNotes }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 10,
+        margin: 10,
     },
     label: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
+        color: '#555', // Lightened text color for the label
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#aaa', // Lighter border color
         borderRadius: 5,
         padding: 10,
         height: 80, // You can adjust this height as needed
         textAlignVertical: 'top', // Ensures text starts at the top
+        backgroundColor: '#f9f9f9', // Light background color for the input
     },
 });
 

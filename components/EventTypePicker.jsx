@@ -22,31 +22,28 @@ const EventTypePicker = ({ eventType, setEventType }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 15,
     padding: 15,
-    backgroundColor: '#000000', // Dark background for contrast
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#FFD700', // Golden border for elegance
-    shadowColor: '#FFD700',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
+    backgroundColor: '#f9f9f9', // Light background
+    borderRadius: 10,
+    margin: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // Light shadow effect
   },
   label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#555', // Softer text color
     marginBottom: 10,
-    fontSize: 18,
-    color: '#FFD700', // Golden text color for label
-    textAlign: 'center',
   },
   picker: {
     height: 50,
-    borderColor: '#FFD700', // Golden border for the Picker
+    borderColor: '#ddd', // Light border color
     borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: '#444444', // Dark background for the Picker
-    color: '#FFD700', // Golden text color for selected item
+    borderRadius: 5,
+    backgroundColor: '#fff', // Light background for picker
   },
 });
 
