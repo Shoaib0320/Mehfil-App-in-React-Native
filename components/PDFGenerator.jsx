@@ -6,21 +6,25 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 
 const PDFGenerator = ({ htmlContent }) => {
-  const [pdfFilePath, setPdfFilePath] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pdfFilePath, setPdfFilePath] = useState('');
   const [showOpenButton, setShowOpenButton] = useState(false);
 
   const generatePDF = async () => {
     setLoading(true);
     try {
+      // Create a unique file name using the current timestamp
+      const fileName = `Mehfil_E_Milad_Poster_${Date.now()}.pdf`;
       const options = {
         html: htmlContent,
-        fileName: 'Mehfil_E_Milad_Poster',
+        fileName: fileName,
         directory: 'Documents',
       };
+
       const file = await RNHTMLtoPDF.convert(options);
       setPdfFilePath(file.filePath);
       Alert.alert('Success', 'PDF Created Successfully');
+      setShowOpenButton(false); // Reset the button visibility
     } catch (error) {
       Alert.alert('Error', 'Failed to generate PDF');
     } finally {
@@ -56,12 +60,12 @@ const PDFGenerator = ({ htmlContent }) => {
       }
     }
 
-    const destinationPath = `${RNFS.DocumentDirectoryPath}/Mehfil-e-Milad-Poster.pdf`;
+    const destinationPath = `${RNFS.DocumentDirectoryPath}/${pdfFilePath.split('/').pop()}`; // Get the last part of the path for the destination file
 
     try {
       await RNFS.copyFile(pdfFilePath, destinationPath);
       Alert.alert('Download Complete', `PDF has been saved successfully to: ${destinationPath}`);
-      setShowOpenButton(true);
+      setShowOpenButton(true); // Show the open button after download
     } catch (error) {
       console.log('Error during file download: ', error);
       Alert.alert('Error', 'Failed to download PDF. Please try again.');
@@ -70,7 +74,7 @@ const PDFGenerator = ({ htmlContent }) => {
 
   const openPDF = async () => {
     try {
-      const destinationPath = `${RNFS.DocumentDirectoryPath}/Mehfil-e-Milad-Poster.pdf`;
+      const destinationPath = `${RNFS.DocumentDirectoryPath}/${pdfFilePath.split('/').pop()}`; // Open the same downloaded PDF
       await FileViewer.open(destinationPath);
     } catch (error) {
       console.log('Error opening file: ', error);
@@ -79,7 +83,7 @@ const PDFGenerator = ({ htmlContent }) => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ marginBottom: 10, paddingBottom: 20 }}>
       <Button mode="contained" onPress={generatePDF} style={{ marginTop: 10 }} disabled={loading}>
         {loading ? (
           <ActivityIndicator animating={true} color="#ffffff" />

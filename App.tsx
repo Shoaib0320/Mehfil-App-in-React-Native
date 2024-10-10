@@ -2048,13 +2048,364 @@
 
 
 
+// import React, { useState, useRef } from 'react';
+// import { ScrollView, StyleSheet, View, Alert,ImageBackground,Text } from 'react-native';
+// import { Button } from 'react-native-paper';
+// import { launchImageLibrary } from 'react-native-image-picker';
+// import ViewShot from 'react-native-view-shot'; // Import ViewShot
+// import RNFS from 'react-native-fs';
+// import FileViewer from 'react-native-file-viewer'; // Import FileViewer
+
+// import DatePickerComponent from './components/DatePickerComponent';
+// import DayComponent from './components/DayComponent';
+// import TimeComponent from './components/TimeComponent';
+// import EventTypePicker from './components/EventTypePicker';
+// import NaatKhuanComponent from './components/NaatKhuanComponent';
+// import KhatibComponent from './components/KhatibComponent';
+// import LangerCheckbox from './components/LangerCheckbox';
+// import PosterPreview from './components/PosterPreview';
+// import AddressComponent from './components/AddressComponent';
+// import OrganizerComponent from './components/OrganizerComponent';
+// import PDFGenerator from './components/PDFGenerator';
+// import NoteComponent from './components/NoteComponent';
+
+// const MehfilApp = () => {
+//     const [day, setDay] = useState('');
+//     const [date, setDate] = useState('');
+//     const [time, setTime] = useState('');
+//     const [khatib, setKhatib] = useState('');
+//     const [address, setAddress] = useState('');
+//     const [showPoster, setShowPoster] = useState(false);
+//     const [isLangerChecked, setIsLangerChecked] = useState(false);
+//     const [eventType, setEventType] = useState('محفل بارھویں');
+//     const [organization, setOrganization] = useState('');
+//     const [khatibImage, setKhatibImage] = useState(null);
+//     const [naatKhuans, setNaatKhuans] = useState([{ name: '', image: null }]);
+//     const [notes, setNotes] = useState(''); // State for notes
+//     const [childrenName, setChildrenName] = useState('');
+//     const [childrenImage, setChildrenImage] = useState('');
+//     const [dulhaName, setDulhaName] = useState('');
+//     const [dulhaImage, setDulhaImage] = useState('');
+
+//     const viewShotRef = useRef(); // Reference to ViewShot
+
+//     const selectKhatibImage = async () => {
+//         const result = await launchImageLibrary();
+//         if (result && !result.didCancel && result.assets) {
+//             const uri = result.assets[0].uri;
+//             setKhatibImage(uri);
+//         }
+//     };
+
+//     const selectNaatKhuanImage = async (index) => {
+//         const result = await launchImageLibrary();
+//         if (result && !result.didCancel && result.assets) {
+//             const uri = result.assets[0].uri;
+//             const updatedNaatKhuans = [...naatKhuans];
+//             updatedNaatKhuans[index].image = uri;
+//             setNaatKhuans(updatedNaatKhuans);
+//         }
+//     };
+
+//     // Generate HTML content for the PDF
+//     const generateHtmlContent = () => {
+//         return `
+//             <html>
+//                 <head>
+//                     <style>
+//                         body {
+//                             font-family: 'Georgia', serif;
+//                             color: #333;
+//                             background-color: #f5f5f5;
+//                         }
+//                         .poster {
+//                             background-color: #fff;
+//                             padding: 20px;
+//                             margin: 10px auto;
+//                             border: 3px solid #daa520;
+//                             max-width: 750px;
+//                             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//                             border-radius: 10px;
+//                         }
+//                         h1, h2, h3 {
+//                             font-family: 'Palatino', serif;
+//                             text-align: center;
+//                             color: #2c3e50;
+//                             font-weight: bold;
+//                             margin: 5px 0;
+//                         }
+//                         .title h1 {
+//                             color: #b8860b;
+//                             font-size: 32px;
+//                             letter-spacing: 1px;
+//                             text-transform: uppercase;
+//                             border-bottom: 1px solid #b8860b;
+//                             padding-bottom: 5px;
+//                         }
+//                         .highlight {
+//                             color: #d4af37;
+//                             font-weight: bold;
+//                         }
+//                         .date-time {
+//                             text-align: center;
+//                             font-size: 18px;
+//                             margin: 5px 0;
+//                         }
+//                         .divider {
+//                             height: 2px;
+//                             background-color: #d4af37;
+//                             margin: 15px 0;
+//                             border-radius: 5px;
+//                         }
+//                         .location {
+//                             font-size: 18px;
+//                             color: #2c3e50;
+//                             text-align: center;
+//                             margin-bottom: 5px;
+//                         }
+//                         .naatkhwan-section {
+//                             display: flex;
+//                             flex-wrap: wrap;
+//                             justify-content: center;
+//                             margin: 10px 0;
+//                         }
+//                         .naatkhwan-card {
+//                             width: 150px;
+//                             margin: 5px;
+//                             text-align: center;
+//                         }
+//                         .naatkhwan-card img {
+//                             width: 100px;
+//                             border-radius: 50px;
+//                             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//                         }
+//                         .khatib-section img {
+//                             display: block;
+//                             margin: 0 auto;
+//                             width: 100px;
+//                             height: 100px;
+//                             border-radius: 50%;
+//                             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+//                         }
+//                         .khatib-section {
+//                             text-align: center;
+//                             margin-bottom: 10px;
+//                         }
+//                         .langer-content {
+//                             font-size: 18px;
+//                             color: #27ae60;
+//                             text-align: center;
+//                             font-weight: bold;
+//                             margin-top: 5px;
+//                         }
+//                         .notes {
+//                             font-size: 16px;
+//                             color: #2c3e50;
+//                             margin: 10px 0;
+//                             padding: 10px;
+//                             border: 1px dashed #d4af37;
+//                         }
+//                     </style>
+//                 </head>
+//                 <body>
+//                     <div class="poster">
+//                         <div class="title"><h1>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</h1></div>
+//                         <div class="title"><h1>Mehfil-e-Milad</h1></div>
+//                         <div class="title"><h1>${eventType}</h1></div>
+//                         <div class="date-time">Day: <span class="highlight">${day}</span></div>
+//                         <div class="date-time">Date: <span class="highlight">${date}</span></div>
+//                         <div class="date-time">Time: <span class="highlight">${time}</span></div>
+//                         <div class="divider"></div>
+//                         <div class="naatkhwan-section">
+//                             ${naatKhuans
+//                                 .map(naatkhwan => 
+//                                     `<div class="naatkhwan-card">
+//                                         <img src="${naatkhwan.image}" alt="${naatkhwan.name}">
+//                                         <p class="highlight">${naatkhwan.name}</p>
+//                                     </div>`
+//                                 )
+//                                 .join('')}
+//                         </div>
+//                         <div class="divider"></div>
+//                         <div class="khatib-section">
+//                             ${khatibImage ? `<img src="${khatibImage}" alt="Khatib">` : ''}
+//                             <div class="location">Khatib: <span class="highlight">${khatib}</span></div>
+//                         </div>
+//                         <div class="location">Address: <span class="highlight">${address}</span></div>
+//                         ${isLangerChecked ? `<div class="langer-content">Langer will be served</div>` : ''}
+//                         <div class="notes">Notes: <span class="highlight">${notes}</span></div>
+//                     </div>
+//                 </body>
+//             </html>
+//         `;
+//     };
+
+//     const htmlContent = generateHtmlContent(); // Call the function to get the HTML content
+
+//     const savePosterAsImage = async () => {
+//         try {
+//             const uri = await viewShotRef.current.capture();
+            
+//             // Define the path where the image will be saved
+//             const imagePath = `${RNFS.DocumentDirectoryPath}/poster.png`; // Save as 'poster.png' in Document Directory
+
+//             // Move the captured image to the desired location
+//             await RNFS.moveFile(uri, imagePath);
+
+//             Alert.alert(
+//                 'Image saved!',
+//                 `Your poster has been saved to: ${imagePath}`,
+//                 [
+//                     {
+//                         text: 'Open Image',
+//                         onPress: () => {
+//                             // Open the saved image
+//                             FileViewer.open(imagePath)
+//                                 .then(() => {
+//                                     // Success opening file
+//                                 })
+//                                 .catch(error => {
+//                                     // Error opening file
+//                                     console.error('Error opening image:', error);
+//                                     Alert.alert('Error', 'Could not open the image. Please check the file and try again.');
+//                                 });
+//                         }
+//                     },
+//                     { text: 'OK', style: 'cancel' }
+//                 ]
+//             );
+//         } catch (error) {
+//             Alert.alert('Error', 'Failed to save the image. Please try again.');
+//             console.error('Error saving image:', error);
+//         }
+//     };
+
+//     return (
+
+//     <ImageBackground
+//         source={{ uri:'https://img.freepik.com/free-vector/realistic-background-mawlid-al-nabi-celebration_23-2150679447.jpg?size=626&ext=jpg' }} 
+//         style={styles.background}
+//     >
+           
+//         <ScrollView style={styles.container}>
+//         <View style={styles.posterContainer}>
+//             <Text style={styles.posterHeader}>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</Text>
+//             <Text style={styles.posterHeader}>Mehfil-E-Milad Poster</Text>
+//         </View>
+//             <DatePickerComponent date={date} setDate={setDate} />
+//             <DayComponent day={day} setDay={setDay} />
+//             <TimeComponent time={time} setTime={setTime} />
+//             {/* <EventTypePicker eventType={eventType} setEventType={setEventType} /> */}
+//             <EventTypePicker
+//                 eventType={eventType}
+//                 setEventType={setEventType}
+//                 setChildrenName={setChildrenName}
+//                 setDulhaName={setDulhaName}
+//                 setChildrenImage={setChildrenImage}
+//                 setDulhaImage={setDulhaImage}
+//             />
+//             <NaatKhuanComponent 
+//                 naatKhuans={naatKhuans} 
+//                 setNaatKhuans={setNaatKhuans} 
+//                 selectNaatKhuanImage={selectNaatKhuanImage} 
+//             />
+//             <KhatibComponent 
+//                 khatib={khatib} 
+//                 setKhatib={setKhatib} 
+//                 selectKhatibImage={selectKhatibImage} 
+//                 khatibImage={khatibImage} 
+//             />
+//             <AddressComponent address={address} setAddress={setAddress} />
+//             <LangerCheckbox isLangerChecked={isLangerChecked} setIsLangerChecked={setIsLangerChecked} />
+//             <OrganizerComponent organization={organization} setOrganization={setOrganization} />
+//             <NoteComponent notes={notes} setNotes={setNotes} />
+
+//             <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
+//             <PosterPreview
+//                 showPoster={showPoster}
+//                 eventType={eventType}
+//                 day={day}
+//                 date={date}
+//                 time={time}
+//                 naatKhuans={naatKhuans}
+//                 khatib={khatib}
+//                 address={address}
+//                 isLangerChecked={isLangerChecked}
+//                 khatibImage={khatibImage}
+//                 organization={organization}
+//                 notes={notes}
+//                 childrenName={childrenName}
+//                 childrenImage={childrenImage}
+//                 dulhaName={dulhaName}
+//                 dulhaImage={dulhaImage}     
+//             />
+
+//             </ViewShot>
+//             <Button mode="contained" onPress={savePosterAsImage} style={styles.downloadButton}>
+//                 Download Image
+//             </Button>
+
+//             <Button mode="contained" onPress={() => setShowPoster(!showPoster)}>
+//                 {showPoster ? 'Hide Poster' : 'Show Poster'}
+//             </Button>
+
+//             <PDFGenerator htmlContent={htmlContent} />
+
+
+//             {/* Other components like DatePickerComponent, DayComponent, etc. */}
+//         </ScrollView>
+//     </ImageBackground>
+//     );
+// };
+
+// const styles = StyleSheet.create({
+//     background: {
+//         flex: 1,
+//         resizeMode: 'cover',
+//     },
+//     container: {
+//         flex: 1,
+//         padding: 16,
+//         backgroundColor: '#f5f5f5',
+//     },
+//     posterContainer: {
+//         alignItems: 'center',
+//         marginVertical: 20,
+//     },
+//     posterHeader: {
+//         fontSize: 28,
+//         textAlign: 'center',
+//         marginBottom: 6,
+//         color: '#5B3F8D', // Deep Plum
+//         fontFamily: 'Arial',
+//         // fontWeight: '600',
+//         fontWeight: 'bold',
+
+//     },
+//     downloadButton: {
+//         marginTop: 20,
+//         backgroundColor: '#2196F3', // Customize your button color
+//         marginBottom:20
+//     },
+// });
+
+// export default MehfilApp;
+
+
+
+
+
+
+
+
 import React, { useState, useRef } from 'react';
-import { ScrollView, StyleSheet, View, Alert,ImageBackground,Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Alert, ImageBackground, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { launchImageLibrary } from 'react-native-image-picker';
-import ViewShot from 'react-native-view-shot'; // Import ViewShot
+import ViewShot from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
-import FileViewer from 'react-native-file-viewer'; // Import FileViewer
+import FileViewer from 'react-native-file-viewer';
+
 
 import DatePickerComponent from './components/DatePickerComponent';
 import DayComponent from './components/DayComponent';
@@ -2081,311 +2432,324 @@ const MehfilApp = () => {
     const [organization, setOrganization] = useState('');
     const [khatibImage, setKhatibImage] = useState(null);
     const [naatKhuans, setNaatKhuans] = useState([{ name: '', image: null }]);
-    const [notes, setNotes] = useState(''); // State for notes
+    const [notes, setNotes] = useState('');
+    const [childrenName, setChildrenName] = useState('');
+    const [childrenImage, setChildrenImage] = useState('');
+    const [dulhaName, setDulhaName] = useState('');
+    const [dulhaImage, setDulhaImage] = useState('');
 
-    const viewShotRef = useRef(); // Reference to ViewShot
+    const viewShotRef = useRef();
 
-    const selectKhatibImage = async () => {
+    const selectImage = async (setter) => {
         const result = await launchImageLibrary();
-        if (result && !result.didCancel && result.assets) {
-            const uri = result.assets[0].uri;
-            setKhatibImage(uri);
+        if (result?.assets && result.assets.length > 0) {
+            setter(result.assets[0].uri);
+        } else {
+            Alert.alert('Image Selection Cancelled');
         }
     };
+
+    const selectKhatibImage = () => selectImage(setKhatibImage);
 
     const selectNaatKhuanImage = async (index) => {
         const result = await launchImageLibrary();
-        if (result && !result.didCancel && result.assets) {
-            const uri = result.assets[0].uri;
+        if (result?.assets && result.assets.length > 0) {
             const updatedNaatKhuans = [...naatKhuans];
-            updatedNaatKhuans[index].image = uri;
+            updatedNaatKhuans[index].image = result.assets[0].uri;
             setNaatKhuans(updatedNaatKhuans);
+        } else {
+            Alert.alert('Image Selection Cancelled');
         }
     };
 
-    // Generate HTML content for the PDF
     const generateHtmlContent = () => {
         return `
             <html>
-                <head>
-                    <style>
-                        body {
-                            font-family: 'Georgia', serif;
-                            color: #333;
-                            background-color: #f5f5f5;
-                        }
-                        .poster {
-                            background-color: #fff;
-                            padding: 20px;
-                            margin: 10px auto;
-                            border: 3px solid #daa520;
-                            max-width: 750px;
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                            border-radius: 10px;
-                        }
-                        h1, h2, h3 {
-                            font-family: 'Palatino', serif;
-                            text-align: center;
-                            color: #2c3e50;
-                            font-weight: bold;
-                            margin: 5px 0;
-                        }
-                        .title h1 {
-                            color: #b8860b;
-                            font-size: 32px;
-                            letter-spacing: 1px;
-                            text-transform: uppercase;
-                            border-bottom: 1px solid #b8860b;
-                            padding-bottom: 5px;
-                        }
-                        .highlight {
-                            color: #d4af37;
-                            font-weight: bold;
-                        }
-                        .date-time {
-                            text-align: center;
-                            font-size: 18px;
-                            margin: 5px 0;
-                        }
-                        .divider {
-                            height: 2px;
-                            background-color: #d4af37;
-                            margin: 15px 0;
-                            border-radius: 5px;
-                        }
-                        .location {
-                            font-size: 18px;
-                            color: #2c3e50;
-                            text-align: center;
-                            margin-bottom: 5px;
-                        }
-                        .naatkhwan-section {
-                            display: flex;
-                            flex-wrap: wrap;
-                            justify-content: center;
-                            margin: 10px 0;
-                        }
-                        .naatkhwan-card {
-                            width: 150px;
-                            margin: 5px;
-                            text-align: center;
-                        }
-                        .naatkhwan-card img {
-                            width: 100px;
-                            border-radius: 50px;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                        }
-                        .khatib-section img {
-                            display: block;
-                            margin: 0 auto;
-                            width: 100px;
-                            height: 100px;
-                            border-radius: 50%;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        }
-                        .khatib-section {
-                            text-align: center;
-                            margin-bottom: 10px;
-                        }
-                        .langer-content {
-                            font-size: 18px;
-                            color: #27ae60;
-                            text-align: center;
-                            font-weight: bold;
-                            margin-top: 5px;
-                        }
-                        .notes {
-                            font-size: 16px;
-                            color: #2c3e50;
-                            margin: 10px 0;
-                            padding: 10px;
-                            border: 1px dashed #d4af37;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="poster">
-                        <div class="title"><h1>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</h1></div>
-                        <div class="title"><h1>Mehfil-e-Milad</h1></div>
-                        <div class="title"><h1>${eventType}</h1></div>
-                        <div class="date-time">Day: <span class="highlight">${day}</span></div>
-                        <div class="date-time">Date: <span class="highlight">${date}</span></div>
-                        <div class="date-time">Time: <span class="highlight">${time}</span></div>
-                        <div class="divider"></div>
-                        <div class="naatkhwan-section">
-                            ${naatKhuans
-                                .map(naatkhwan => 
-                                    `<div class="naatkhwan-card">
-                                        <img src="${naatkhwan.image}" alt="${naatkhwan.name}">
-                                        <p class="highlight">${naatkhwan.name}</p>
-                                    </div>`
-                                )
-                                .join('')}
-                        </div>
-                        <div class="divider"></div>
-                        <div class="khatib-section">
-                            ${khatibImage ? `<img src="${khatibImage}" alt="Khatib">` : ''}
-                            <div class="location">Khatib: <span class="highlight">${khatib}</span></div>
-                        </div>
-                        <div class="location">Address: <span class="highlight">${address}</span></div>
-                        ${isLangerChecked ? `<div class="langer-content">Langer will be served</div>` : ''}
-                        <div class="notes">Notes: <span class="highlight">${notes}</span></div>
+            <head>
+                <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+                <style>
+                    body {
+                        font-family: 'Roboto', sans-serif;
+                        background-color: #F0F2F5; /* Soft light background */
+                        margin: 0;
+                        padding: 20px;
+                        height: 100vh; /* Increased height for better visibility */
+                    }
+                    .container {
+                        background-color: #FFFFFF;
+                        border-radius: 20px; /* Rounded corners for elegance */
+                        padding: 50px; /* Increased padding for a more spacious look */
+                        box-shadow: 0 15px 60px rgba(0, 0, 0, 0.1);
+                        border: 1px solid #C6C6C6; /* Subtle border */
+                        transition: transform 0.2s;
+                    }
+                    .container:hover {
+                        transform: translateY(-5px);
+                    }
+                    h1 {
+                        font-size: 36px; /* Increased font size */
+                        text-align: center;
+                        margin-bottom: 15px;
+                        color: #4A148C; /* Deep purple */
+                        font-weight: 700;
+                    }
+                    h2 {
+                        font-size: 32px; /* Increased font size */
+                        text-align: center;
+                        margin-bottom: 20px;
+                        font-weight: bold;
+                        color: #4A148C; /* Deep purple */
+                    }
+                    h3 {
+                        font-size: 24px; /* Decreased font size */
+                        text-align: center;
+                        margin-bottom: 15px;
+                        font-weight: 1000;
+                        background-color: #6A1B9A; /* Rich purple */
+                        color: #FFFFFF;
+                        padding: 10px;
+                        border-radius: 5px;
+                    }
+                    .event-details {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-bottom: 30px;
+                    }
+                    .event-details div {
+                        text-align: center;
+                        margin: 0 30px; /* Increased margin for spacing */
+                    }
+                    .event-details img {
+                        width: 140px; /* Increased image size */
+                        height: 140px; /* Increased image size */
+                        border-radius: 50%;
+                        margin-bottom: 5px;
+                        border: 3px solid #D32F2F; /* Bold red border */
+                    }
+                    .info {
+                        font-weight: bold;
+                        font-size: 20px; /* Increased font size */
+                        color: #4A148C; /* Deep purple */
+                    }
+                    .info span {
+                        color: #555555; /* Dark gray for detail text */
+                    }
+                    hr {
+                        border-top: 2px solid #6A1B9A; /* Elegant purple color */
+                        margin: 30px 0; /* Increased margin for spacing */
+                    }
+                    .naat-khuans {
+                        display: flex;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    }
+                    .naat-khuans div {
+                        text-align: center;
+                        margin: 15px;
+                    }
+                    .naat-khuans img {
+                        width: 100px; /* Increased image size */
+                        height: 100px; /* Increased image size */
+                        border-radius: 50%; /* Circular images */
+                        margin-bottom: 5px;
+                        border: 2px solid #6A1B9A; /* Elegant border */
+                    }
+                    .khatib {
+                        text-align: center;
+                        margin-bottom: 30px;
+                    }
+                    .khatib img {
+                        width: 120px; /* Increased image size */
+                        height: 120px; /* Increased image size */
+                        border-radius: 50%; /* Circular image */
+                        border: 3px solid #D32F2F; /* Bold red border */
+                    }
+                    .address {
+                        text-align: center;
+                    }
+                    .address span {
+                        color: #555555; /* Dark gray for detail text */
+                    }
+                    .notes {
+                        border: 2px solid #D32F2F; /* Bold red border */
+                        padding: 15px;
+                        margin: 15px 0;
+                        background-color: #FFEBEE; /* Light red background */
+                        border-radius: 8px; /* Softer edges */
+                        font-weight: bold;
+                        color: #D32F2F; /* Bold red for emphasis */
+                    }
+                    .vip-banner {
+                        background-color: #6A1B9A; /* Rich purple color */
+                        color: #FFFFFF; /* White text */
+                        padding: 15px;
+                        border-radius: 5px;
+                        text-align: center;
+                        margin-bottom: 30px;
+                        font-size: 20px; /* Increased font size for banner */
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</h1>
+                    <h2>Mehfil-e-Milad</h2>
+                    <div class="vip-banner">
+                        <h3>${eventType}</h3>
                     </div>
-                </body>
+                    <div class="event-details">
+                        ${eventType === 'رسمِ آمین' ? 
+                            `<div>
+                                <img src="${childrenImage}" alt="Children">
+                                <p class="info">Children: <span>${childrenName}</span></p>
+                            </div>` : 
+                            `<div>
+                                <img src="${dulhaImage}" alt="Dulha">
+                                <p class="info">Dulha: <span>${dulhaName}</span></p>
+                            </div>` 
+                        }
+                        <div>
+                            <p class="info">Day: <span>${day}</span></p>
+                            <p class="info">Date: <span>${date}</span></p>
+                            <p class="info">Time: <span>${time}</span></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="naat-khuans">
+                        <h4 style="width: 100%; text-align: center; color: #4A148C;">Naat Khuans</h4>
+                        ${naatKhuans.map(naatkhwan => `
+                            <div>
+                                <img src="${naatkhwan.image}" alt="${naatkhwan.name}">
+                                <p style="font-weight: bold; color: #4A148C;">${naatkhwan.name}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <hr>
+                    <div class="khatib">
+                        ${khatibImage ? `<img src="${khatibImage}" alt="Khatib">` : ''}
+                        <p class="info">Khatib: <span>${khatib}</span></p>
+                    </div>
+                    <div class="address">
+                        <p class="info">Address: <span>${address}</span></p>
+                        ${isLangerChecked ? `<p style="color: #4A148C; font-weight: bold;">Langer will be served</p>` : ''}
+                        <div class="notes">Notes: <span style="color: #D32F2F;">${notes}</span></div>
+                    </div>
+                </div>
+            </body>
             </html>
         `;
     };
-
-    const htmlContent = generateHtmlContent(); // Call the function to get the HTML content
+    
+    
 
     const savePosterAsImage = async () => {
         try {
             const uri = await viewShotRef.current.capture();
-            
-            // Define the path where the image will be saved
-            const imagePath = `${RNFS.DocumentDirectoryPath}/poster.png`; // Save as 'poster.png' in Document Directory
+            const imagePath = `${RNFS.DocumentDirectoryPath}/poster.png`;
 
-            // Move the captured image to the desired location
             await RNFS.moveFile(uri, imagePath);
 
-            Alert.alert(
-                'Image saved!',
-                `Your poster has been saved to: ${imagePath}`,
-                [
-                    {
-                        text: 'Open Image',
-                        onPress: () => {
-                            // Open the saved image
-                            FileViewer.open(imagePath)
-                                .then(() => {
-                                    // Success opening file
-                                })
-                                .catch(error => {
-                                    // Error opening file
-                                    console.error('Error opening image:', error);
-                                    Alert.alert('Error', 'Could not open the image. Please check the file and try again.');
-                                });
-                        }
-                    },
-                    { text: 'OK', style: 'cancel' }
-                ]
-            );
+            Alert.alert('Image saved!', `Your poster has been saved to: ${imagePath}`, [
+                {
+                    text: 'Open Image',
+                    onPress: () => {
+                        FileViewer.open(imagePath)
+                            .catch(error => {
+                                console.error('Error opening image:', error);
+                                Alert.alert('Error', 'Could not open the image. Please check the file and try again.');
+                            });
+                    }
+                },
+                { text: 'OK', style: 'cancel' }
+            ]);
         } catch (error) {
             Alert.alert('Error', 'Failed to save the image. Please try again.');
             console.error('Error saving image:', error);
         }
     };
 
-    // const savePosterAsImage = async () => {
-    //     try {
-    //         const uri = await viewShotRef.current.capture();
-            
-    //         // Define the path where the image will be saved
-    //         const imagePath = `${RNFS.DocumentDirectoryPath}/poster.png`; // Save as 'poster.png' in Document Directory
-    
-    //         // Move the captured image to the desired location
-    //         await RNFS.moveFile(uri, imagePath);
-    
-    //         Alert.alert('Image saved!', `Your poster has been saved to: ${imagePath}`, [{ text: 'OK' }]);
-    //     } catch (error) {
-    //         Alert.alert('Error', 'Failed to save the image. Please try again.');
-    //         console.error('Error saving image:', error);
-    //     }
-    // };
-
     return (
-
-    <ImageBackground
-        source={{ uri:'https://img.freepik.com/free-vector/realistic-background-mawlid-al-nabi-celebration_23-2150679447.jpg?size=626&ext=jpg' }} 
-        style={styles.background}
-    >
-
-           
-        <ScrollView style={styles.container}>
-        <View style={styles.posterContainer}>
-            <Text style={styles.posterHeader}>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</Text>
-            <Text style={styles.posterHeader}>Mehfil-E-Milad Poster</Text>
-        </View>
-            <DatePickerComponent date={date} setDate={setDate} />
-            <DayComponent day={day} setDay={setDay} />
-            <TimeComponent time={time} setTime={setTime} />
-            <EventTypePicker eventType={eventType} setEventType={setEventType} />
-            <NaatKhuanComponent 
-                naatKhuans={naatKhuans} 
-                setNaatKhuans={setNaatKhuans} 
-                selectNaatKhuanImage={selectNaatKhuanImage} 
-            />
-            <KhatibComponent 
-                khatib={khatib} 
-                setKhatib={setKhatib} 
-                selectKhatibImage={selectKhatibImage} 
-                khatibImage={khatibImage} 
-            />
-            <AddressComponent address={address} setAddress={setAddress} />
-            <LangerCheckbox isLangerChecked={isLangerChecked} setIsLangerChecked={setIsLangerChecked} />
-            <OrganizerComponent organization={organization} setOrganization={setOrganization} />
-            <NoteComponent notes={notes} setNotes={setNotes} />
-
-            <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
-                <PosterPreview
-                    showPoster={showPoster}
+        <ImageBackground
+            source={{ uri: 'https://img.freepik.com/free-vector/realistic-background-mawlid-al-nabi-celebration_23-2150679447.jpg?size=626&ext=jpg' }}
+            style={styles.background}
+        >
+            <ScrollView style={styles.container}>
+                <View style={styles.posterContainer}>
+                    <Text style={styles.posterHeader}>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبيبَ اللّٰهِ</Text>
+                    <Text style={styles.posterHeader}>Mehfil-E-Milad Poster</Text>
+                </View>
+                <DatePickerComponent date={date} setDate={setDate} />
+                <DayComponent day={day} setDay={setDay} />
+                <TimeComponent time={time} setTime={setTime} />
+                <EventTypePicker
                     eventType={eventType}
-                    day={day}
-                    date={date}
-                    time={time}
-                    naatKhuans={naatKhuans}
-                    khatib={khatib}
-                    address={address}
-                    isLangerChecked={isLangerChecked}
-                    khatibImage={khatibImage}
-                    organization={organization}
-                    notes={notes}
+                    setEventType={setEventType}
+                    setChildrenName={setChildrenName}
+                    setDulhaName={setDulhaName}
+                    setChildrenImage={setChildrenImage}
+                    setDulhaImage={setDulhaImage}
                 />
-            </ViewShot>
-            <Button mode="contained" onPress={savePosterAsImage} style={styles.downloadButton}>
-                Download Image
-            </Button>
+                <NaatKhuanComponent naatKhuans={naatKhuans} setNaatKhuans={setNaatKhuans} selectNaatKhuanImage={selectNaatKhuanImage} />
+                <KhatibComponent khatib={khatib} setKhatib={setKhatib} selectKhatibImage={selectKhatibImage} khatibImage={khatibImage} />
+                <AddressComponent address={address} setAddress={setAddress} />
+                <LangerCheckbox isLangerChecked={isLangerChecked} setIsLangerChecked={setIsLangerChecked} />
+                <OrganizerComponent organization={organization} setOrganization={setOrganization} />
+                <NoteComponent notes={notes} setNotes={setNotes} />
 
-            <Button mode="contained" onPress={() => setShowPoster(!showPoster)}>
-                {showPoster ? 'Hide Poster' : 'Show Poster'}
-            </Button>
+                <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
+                    <PosterPreview
+                        showPoster={showPoster}
+                        eventType={eventType}
+                        day={day}
+                        date={date}
+                        time={time}
+                        naatKhuans={naatKhuans}
+                        khatib={khatib}
+                        address={address}
+                        isLangerChecked={isLangerChecked}
+                        khatibImage={khatibImage}
+                        organization={organization}
+                        notes={notes}
+                        childrenName={childrenName}
+                        childrenImage={childrenImage}
+                        dulhaName={dulhaName}
+                        dulhaImage={dulhaImage}
+                    />
+                </ViewShot>
+                <Button mode="contained" onPress={savePosterAsImage} style={styles.downloadButton}>
+                    Download Image
+                </Button>
 
-            <PDFGenerator htmlContent={htmlContent} />
+                <Button mode="contained" onPress={() => setShowPoster(!showPoster)}>
+                    {showPoster ? 'Hide Poster' : 'Show Poster'}
+                </Button>
 
-
-            {/* Other components like DatePickerComponent, DayComponent, etc. */}
-        </ScrollView>
-    </ImageBackground>
+                <PDFGenerator htmlContent={generateHtmlContent()} />
+            </ScrollView>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
     background: {
-            flex: 1,
-            resizeMode: 'cover',
-          },
-    container: {
         flex: 1,
+        justifyContent: 'center',
+    },
+    container: {
         padding: 16,
-        backgroundColor: '#f5f5f5',
     },
     posterContainer: {
-        alignItems: 'center',
-        marginVertical: 20,
+        marginBottom: 20,
     },
     posterHeader: {
-        fontSize: 28,
-        textAlign: 'center',
-        marginBottom: 6,
-        color: '#5B3F8D', // Deep Plum
-        fontFamily: 'Arial',
-        fontWeight: '600',
+        fontSize: 24,
         fontWeight: 'bold',
-
+        textAlign: 'center',
     },
     downloadButton: {
-        marginTop: 20,
-        backgroundColor: '#2196F3', // Customize your button color
+        marginVertical: 10,
     },
 });
 

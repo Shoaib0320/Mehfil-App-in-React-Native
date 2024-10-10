@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
-        color: '#555', // Lightened text color for the label
+        color: '#fff', // Lightened text color for the label
     },
     input: {
         borderWidth: 1,
@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
         height: 80, // You can adjust this height as needed
         textAlignVertical: 'top', // Ensures text starts at the top
         backgroundColor: '#f9f9f9', // Light background color for the input
+        color: '#555', // Lightened text color for the label
+
     },
 });
 

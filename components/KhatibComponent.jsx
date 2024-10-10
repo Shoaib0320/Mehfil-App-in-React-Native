@@ -13,7 +13,7 @@ const KhatibComponent = ({ khatib, setKhatib, selectKhatibImage, khatibImage }) 
           onChangeText={setKhatib}
           style={styles.textInput}
           mode="outlined"
-          theme={{ colors: { primary: '#FFD700', placeholder: '#FFD700', text: '#FFD700' } }} // Golden colors for a cohesive look
+          theme={{ colors: { placeholder: '#FFD700', text: '#FFD700' } }} // Golden colors for a cohesive look
         />
         <Button onPress={selectKhatibImage} mode="contained" style={styles.button}>
           Select Khatib Image
