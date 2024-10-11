@@ -22,17 +22,7 @@ const TimeComponent = ({ time, setTime }) => (
 );
 
 const styles = StyleSheet.create({
-  // inputContainer: {
-  //   margin: 10,
-  //   padding: 5,
-  //   backgroundColor: '#2c2c2e', // Darker background for contrast
-  //   borderRadius: 10,
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 6 },
-  //   shadowOpacity: 0.3,
-  //   shadowRadius: 8,
-  //   elevation: 8, // For Android shadow effect
-  // },
+  
   input: {
     margin: 10,
     backgroundColor: '#f5f5f5', // Soft light background for input

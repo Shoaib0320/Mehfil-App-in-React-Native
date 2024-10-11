@@ -27,40 +27,43 @@
 //         <Text style={styles.title}>Mehfil-E-Milad Poster</Text>
 //         <Text style={styles.eventType}>{eventType}</Text>
 
-//         {/* Event Type Specific Content: Dulha or Children Info */}
-//         {(eventType === 'رسمِ آمین' || eventType === 'شادی خانہ آبادی') && (
-//           <View style={styles.rowContainer}>
-//             {eventType === 'رسمِ آمین' && childrenName && (
-//               <View style={styles.inputContainer}>
-//                 <Text style={styles.inputLabel}>Children's Name: {childrenName}</Text>
-//                 {childrenImage && <Image source={{ uri: childrenImage }} style={styles.image} />}
-//               </View>
-//             )}
+// {/* Event Type Specific Content: Dulha or Children Info */}
+// <View style={styles.rowContainer}>
+//   {(eventType === 'رسمِ آمین' || eventType === 'شادی خانہ آبادی') && (
+//     <>
+//       {eventType === 'رسمِ آمین' && childrenName && (
+//         <View style={styles.inputContainer}>
+//           <Text style={styles.inputLabel}>Children Name: {childrenName}</Text>
+//           {childrenImage && <Image source={{ uri: childrenImage }} style={styles.image} />}
+//         </View>
+//       )}
 
-//             {eventType === 'شادی خانہ آبادی' && dulhaName && (
-//               <View style={styles.inputContainer}>
-//                 <Text style={styles.inputLabel}>Dulha's Name: {dulhaName}</Text>
-//                 {dulhaImage && <Image source={{ uri: dulhaImage }} style={styles.image} />}
-//               </View>
-//             )}
+//       {eventType === 'شادی خانہ آبادی' && dulhaName && (
+//         <View style={styles.inputContainer}>
+//           <Text style={styles.inputLabel}>Dulha Name: {dulhaName}</Text>
+//           {dulhaImage && <Image source={{ uri: dulhaImage }} style={styles.image} />}
+//         </View>
+//       )}
+//     </>
+//   )}
 
-//             {/* Day, Date, and Time */}
-//             <View style={styles.dateTimeColumnContainer}>
-//               <View style={styles.infoItem}>
-//                 <Text style={styles.DayTimeDatelabel}>Day:</Text>
-//                 <Text style={styles.DayTimeDateinfo}>{day}</Text>
-//               </View>
-//               <View style={styles.infoItem}>
-//                 <Text style={styles.DayTimeDatelabel}>Date:</Text>
-//                 <Text style={styles.DayTimeDateinfo}>{date}</Text>
-//               </View>
-//               <View style={styles.infoItem}>
-//                 <Text style={styles.DayTimeDatelabel}>Time:</Text>
-//                 <Text style={styles.DayTimeDateinfo}>{time}</Text>
-//               </View>
-//             </View>
-//           </View>
-//         )}
+//   {/* Day, Date, and Time - This will always render */}
+//   <View style={styles.dateTimeColumnContainer}>
+//     <View style={styles.infoItem}>
+//       <Text style={styles.DayTimeDatelabel}>Day:</Text>
+//       <Text style={styles.DayTimeDateinfo}>{day}</Text>
+//     </View>
+//     <View style={styles.infoItem}>
+//       <Text style={styles.DayTimeDatelabel}>Date:</Text>
+//       <Text style={styles.DayTimeDateinfo}>{date}</Text>
+//     </View>
+//     <View style={styles.infoItem}>
+//       <Text style={styles.DayTimeDatelabel}>Time:</Text>
+//       <Text style={styles.DayTimeDateinfo}>{time}</Text>
+//     </View>
+//   </View>
+// </View>
+
 
 //         {/* Naat Khuan Section */}
 //         <View style={styles.naatKhuanContainer}>
@@ -111,9 +114,12 @@
 //   );
 // };
 
+
+
+
+
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-
 
 const PosterPreview = ({
   showPoster,
@@ -128,55 +134,48 @@ const PosterPreview = ({
   organization,
   notes,
   isLangerChecked,
-  childrenName = '',
-  childrenImage = '',
-  dulhaName = '',
-  dulhaImage = ''
+  childrenData = [],
+  dulhaData = []
 }) => {
   return (
     showPoster && (
       <View style={styles.container}>
-        <Text style={styles.salutation}>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ يَا حبیبَ اللّٰهِ</Text>
+        <Text style={styles.salutation}>اَلصَّلَاةُ وَالسَّلَامُ عَلَيْكَ یَا حبیبَ اللّٰهِ</Text>
         <Text style={styles.title}>Mehfil-E-Milad Poster</Text>
         <Text style={styles.eventType}>{eventType}</Text>
 
-{/* Event Type Specific Content: Dulha or Children Info */}
-<View style={styles.rowContainer}>
-  {(eventType === 'رسمِ آمین' || eventType === 'شادی خانہ آبادی') && (
-    <>
-      {eventType === 'رسمِ آمین' && childrenName && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Children Name: {childrenName}</Text>
-          {childrenImage && <Image source={{ uri: childrenImage }} style={styles.image} />}
+        {/* Event Type Specific Content: Dulha or Children Info */}
+        <View style={styles.rowContainer}>
+          {eventType === 'رسمِ آمین' && childrenData.map((child, index) => (
+            <View key={index} style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>Children Name {index + 1}: {child.name}</Text>
+              {child.image && <Image source={{ uri: child.image }} style={styles.image} />}
+            </View>
+          ))}
+
+          {eventType === 'شادی خانہ آبادی' && dulhaData.map((dulha, index) => (
+            <View key={index} style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>Dulha Name {index + 1}: {dulha.name}</Text>
+              {dulha.image && <Image source={{ uri: dulha.image }} style={styles.image} />}
+            </View>
+          ))}
+
+          {/* Day, Date, and Time - This will always render */}
+          <View style={styles.dateTimeColumnContainer}>
+            <View style={styles.infoItem}>
+              <Text style={styles.DayTimeDatelabel}>Day:</Text>
+              <Text style={styles.DayTimeDateinfo}>{day}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.DayTimeDatelabel}>Date:</Text>
+              <Text style={styles.DayTimeDateinfo}>{date}</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.DayTimeDatelabel}>Time:</Text>
+              <Text style={styles.DayTimeDateinfo}>{time}</Text>
+            </View>
+          </View>
         </View>
-      )}
-
-      {eventType === 'شادی خانہ آبادی' && dulhaName && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Dulha Name: {dulhaName}</Text>
-          {dulhaImage && <Image source={{ uri: dulhaImage }} style={styles.image} />}
-        </View>
-      )}
-    </>
-  )}
-
-  {/* Day, Date, and Time - This will always render */}
-  <View style={styles.dateTimeColumnContainer}>
-    <View style={styles.infoItem}>
-      <Text style={styles.DayTimeDatelabel}>Day:</Text>
-      <Text style={styles.DayTimeDateinfo}>{day}</Text>
-    </View>
-    <View style={styles.infoItem}>
-      <Text style={styles.DayTimeDatelabel}>Date:</Text>
-      <Text style={styles.DayTimeDateinfo}>{date}</Text>
-    </View>
-    <View style={styles.infoItem}>
-      <Text style={styles.DayTimeDatelabel}>Time:</Text>
-      <Text style={styles.DayTimeDateinfo}>{time}</Text>
-    </View>
-  </View>
-</View>
-
 
         {/* Naat Khuan Section */}
         <View style={styles.naatKhuanContainer}>
@@ -190,42 +189,43 @@ const PosterPreview = ({
         </View>
 
         {/* Khatib Section */}
-        {khatibImage && (
-          <View style={styles.khatibContainer}>
-            <Image source={{ uri: khatibImage }} style={styles.khatibImage} />
-            <Text style={styles.KhatibLabel}>خطیب:</Text>
-            <Text style={styles.KhatibInfo}>{khatib}</Text>
-          </View>
-        )}
+        <View style={styles.khatibContainer}>
+          {khatibImage && <Image source={{ uri: khatibImage }} style={styles.khatibImage} />}
+          <Text style={styles.khatibLabel}>خطیب:</Text>
+          <Text style={styles.khatibInfo}>{khatib}</Text>
+        </View>
 
+        {/* Address Section */}
         <View style={styles.addressContainer}>
-          <Text style={styles.addressLabel}>Address: </Text>
+          <Text style={styles.addressLabel}>Address:</Text>
           <Text style={styles.addressInfo}>{address}</Text>
         </View>
 
-        <View style={styles.organizerContainer}>
-          <Text style={styles.label}>Mehfil Organizer: </Text>
-          <Text style={styles.info}>{organization}</Text>
-        </View>
+        {/* Organization Section */}
+          <View style={styles.organizerContainer}>
+           <Text style={styles.label}>Mehfil Organizer: </Text>
+           <Text style={styles.info}>{organization}</Text>
+         </View>
 
-        {/* Langer Information based on Event Type */}
+              {/* Langer Information based on Event Type */}
         {isLangerChecked && eventType === 'محفل بارھویں' && (
-          <Text style={styles.langerText}>لنگرِ میلاد کا اہتمام ہے</Text>
-        )}
-        {isLangerChecked && eventType === 'محفل گیارہویں' && (
-          <Text style={styles.langerText}>لنگرِ غوثیہ کا اہتمام ہے۔</Text>
-        )}
+              <Text style={styles.langerText}>لنگرِ میلاد کا اہتمام ہے</Text>
+            )}
+            {isLangerChecked && eventType === 'محفل گیارہویں' && (
+              <Text style={styles.langerText}>لنگرِ غوثیہ کا اہتمام ہے۔</Text>
+            )}
 
-        <View style={styles.notesContainer}>
-          <Text style={styles.label}>Note: </Text>
-          <Text style={styles.info}>{notes}</Text>
-        </View>
+            <View style={styles.notesContainer}>
+              <Text style={styles.label}>Note: </Text>
+              <Text style={styles.info}>{notes}</Text>
+            </View>
 
-        <Text style={styles.footerText}>Developed By Shoaib Raza</Text>
-      </View>
+            <Text style={styles.footerText}>Developed By Shoaib Raza</Text>
+          </View>
     )
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
